@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Spot Detector</title>
+</head>
+<body>
+    <h1>Parking Spot Detector</h1>
+    <div id="parking-info"></div>
+    <video id="parking-video" width="640" height="480" controls autoplay></video>
+
+    <script>
+        // Function to fetch parking information
+        async function fetchParkingInfo() {
+            try {
+                const response = await fetch('http://localhost:8000/check_parking');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching parking info:', error);
+            }
+        }
+
+        // Function to update parking information on the page
+        async function updateParkingInfo() {
+            const parkingInfoElement = document.getElementById('parking-info');
+            const parkingData = await fetchParkingInfo();
+            const spaceStatus = parkingData.space_status;
+            let html = '<p>Total Spaces: ' + parkingData.total_spaces + '</p>';
+            html += '<p>Free Spaces: ' + parkingData.free_spaces + '</p>';
+            html += '<p>Parking Status:</p><ul>';
+            for (const key in spaceStatus) {
+                const spot = spaceStatus[key];
+                const status = spot.status === 'Empty' ? 'Free' : 'Occupied';
+                html += '<li>Parking Spot ' + key + ': ' + status + '</li>';
+            }
+            html += '</ul>';
+            parkingInfoElement.innerHTML = html;
+        }
+
+        // Update parking information periodically
+        setInterval(updateParkingInfo, 1000);
+
+        // Server-Sent Events (SSE) for real-time updates
+        const eventSource = new EventSource('http://localhost:8000/sse_parking_status');
+        eventSource.onmessage = function(event) {
+            const parkingData = JSON.parse(event.data);
+            const parkingInfoElement = document.getElementById('parking-info');
+            const spaceStatus = parkingData.data.space_status;
+            let html = '<p>Total Spaces: ' + parkingData.data.total_spaces + '</p>';
+            html += '<p>Free Spaces: ' + parkingData.data.free_spaces + '</p>';
+            html += '<p>Parking Status:</p><ul>';
+            for (const key in spaceStatus) {
+                const spot = spaceStatus[key];
+                const status = spot.status === 'Empty' ? 'Free' : 'Occupied';
+                html += '<li>Parking Spot ' + key + ': ' + status + '</li>';
+            }
+            html += '</ul>';
+            parkingInfoElement.innerHTML = html;
+        };
+
+        // Set up video element
+        const videoElement = document.getElementById('parking-video');
+        videoElement.src = 'http://localhost:8000/video_feed';
+        videoElement.type = 'video/mp4'; // Set the type if it's an MP4 video
+    </script>
+</body>
+</html>

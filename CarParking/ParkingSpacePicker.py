@@ -3,7 +3,7 @@ import pickle
 
 
 
-width, height = 107, 48
+width, height = 75, 32
 try:
     with open('CarParkPos','rb') as f:
         posList = pickle.load(f)            
@@ -25,7 +25,7 @@ def mouseClick(events, x, y, flags, params):
         pickle.dump(posList, f)            
 
 while True:
-    img = cv2.imread("carParkImg.png")
+    img = cv2.imread("carParkImg2.jpg")
     # Create a copy of the image to draw rectangles on
     img_copy = img.copy()
     
