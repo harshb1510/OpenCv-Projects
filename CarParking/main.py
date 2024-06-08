@@ -24,7 +24,7 @@ for i, pos in enumerate(posList):
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500"],  # Update this with your actual origin
+    allow_origins=["http://127.0.0.1:5500","http://localhost:5173"],  # Update this with your actual origin
     allow_credentials=True,
     allow_methods=["GET"],
     allow_headers=["*"],
