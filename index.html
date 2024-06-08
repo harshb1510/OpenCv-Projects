@@ -14,7 +14,7 @@
         // Function to fetch parking information
         async function fetchParkingInfo() {
             try {
-                const response = await fetch('http://localhost:8000/check_parking');
+                const response = await fetch('https://parkingspotdetector.onrender.com/check_parking');
                 const data = await response.json();
                 return data;
             } catch (error) {
