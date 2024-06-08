@@ -16,6 +16,7 @@
             try {
                 const response = await fetch('https://parkingspotdetector.onrender.com/check_parking');
                 const data = await response.json();
+                console.log(data)
                 return data;
             } catch (error) {
                 console.error('Error fetching parking info:', error);
@@ -43,7 +44,7 @@
         setInterval(updateParkingInfo, 1000);
 
         // Server-Sent Events (SSE) for real-time updates
-        const eventSource = new EventSource('http://localhost:8000/sse_parking_status');
+        const eventSource = new EventSource('https://parkingspotdetector.onrender.com/sse_parking_status');
         eventSource.onmessage = function(event) {
             const parkingData = JSON.parse(event.data);
             const parkingInfoElement = document.getElementById('parking-info');
@@ -62,7 +63,7 @@
 
         // Set up video element
         const videoElement = document.getElementById('parking-video');
-        videoElement.src = 'http://localhost:8000/video_feed';
+        videoElement.src = 'https://parkingspotdetector.onrender.com/video_feed';
         videoElement.type = 'video/mp4'; // Set the type if it's an MP4 video
     </script>
 </body>
