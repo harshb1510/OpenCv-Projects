@@ -1,0 +1,6 @@
+fastapi==0.111.0
+numpy==1.26.4
+opencv_contrib_python==4.9.0.80
+opencv_python==4.9.0.80
+sse_starlette==2.1.0
+uvicorn==0.30.1
