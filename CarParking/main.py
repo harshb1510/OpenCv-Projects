@@ -43,7 +43,7 @@ def checkParkingSpace(imgPro, img):
 
         imgCrop = imgPro[y:y + height, x:x + width]
         count = cv2.countNonZero(imgCrop)
-        if count < 800:
+        if count < 450:
             color = (0, 255, 0)
             thickness = 5
             status = "Empty"
